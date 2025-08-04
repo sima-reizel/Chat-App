@@ -19,7 +19,7 @@ export default function RegisterForm() {
         e.preventDefault()
         const newErrors = {}
         if (!user.userName) newErrors.userName = 'שם משתמש חובה'
-        if (!validatePassword(user.password)) newErrors.password = 'Password must be at least 6 characters and include letters and numbers'
+        if (!validatePassword(user.password)) newErrors.password = 'הסיסמה חייבת להיות באורך של לפחות 6 תווים ולכלול אותיות ומספרים'
         if (!validateEmail(user.email)) newErrors.email = 'מייל לא תקין'
         setErrors(newErrors)
 
