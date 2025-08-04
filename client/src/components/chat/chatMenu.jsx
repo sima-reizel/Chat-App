@@ -18,7 +18,7 @@ export default function ChatMenu({ socket }) {
 
   return (
     <>
-      <h1>hi {user?.userName}</h1>
+      <h1>שלום {user?.userName}</h1>
       {error && <div>{error}</div>}
       <GroupsManager socket={socket} />
     </>
