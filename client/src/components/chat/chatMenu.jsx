@@ -5,7 +5,7 @@ export default function ChatMenu() {
   return (
     <>
       <h1>hi {user?.userName}</h1>
-      <h1>כאן אמור להיות הדף הראשי שרואים את כל הצאטים</h1>
+      <h1>This should be the main page where you see all the chats.</h1>
     </>
   );
 }
