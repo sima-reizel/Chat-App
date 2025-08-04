@@ -5,6 +5,7 @@ import cors from 'cors'
 import authRoutes from './routes/authRoutes.js'
 import dotenv from 'dotenv'
 import groupRoutes from './routes/groupRoutes.js'
+import {validAuth} from './middleware/authMiddleware.js'
 
 dotenv.config()
 
@@ -12,18 +13,17 @@ const app = express()
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000", // your frontend URL
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"]
   }
 });
-
-
 
 const PORT = process.env.PORT || 5000
 
 app.use(cors())
 app.use(json())
 app.use(authRoutes)
+app.use(validAuth)
 app.use('/api/groups', groupRoutes);
 
 
