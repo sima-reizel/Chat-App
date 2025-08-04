@@ -1,43 +1,70 @@
 import { readUsers, writeUsers } from '../services/userService.js'
+import bcrypt from 'bcrypt'
+import { generateToken } from '../utils/tokenUtils.js'
 
-export function login(req, res) {
-  const { userName, password } = req.body
-  const users = readUsers()
+export const register = async (req, res) => {
+  try {
+    const { userName, password, email } = req.body
 
-  const foundUser = users.find(
-    u => u.userName === userName && u.password === password
-  )
+    if (!userName || !password || !email) {
+      return res.status(400).json({ message: 'Missing fields' })
+    }
 
-  if (!foundUser) {
-    return res.status(401).json({ message: 'Invalid credentials' })
+    const users = await readUsers()
+    const userExists = users.find(
+      user => user.email === email || user.userName === userName
+    )
+
+    if (userExists) {
+      return res.status(409).json({ message: 'User with same credentials already exists' })
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const newUser = { userName, email, password: hashedPassword }
+    users.push(newUser)
+    await writeUsers(users)
+    const token = generateToken(newUser)
+
+    res.status(201).json({
+      message: 'User registered successfully',
+      token,
+      user: {
+        userName: newUser.userName,
+        email: newUser.email,
+      }
+    })
+  } catch (err) {
+    res.status(500).json({ message: err.message })
   }
-
-  res.status(200).json({
-    message: 'Login successful',
-    user: {
-      userName: foundUser.userName,
-      email: foundUser.email,
-    },
-  })
 }
 
-export function register(req, res) {
-  const { userName, password, email } = req.body
+export const login = async (req, res) => {
+  try {
+    const { userName, password } = req.body
+    const users = await readUsers()
 
-  if (!userName || !password || !email) {
-    return res.status(400).json({ message: 'Missing fields' })
+    const foundUser = users.find(user => user.userName === userName)
+     if (!foundUser) {
+      return res.status(401).json({ message: 'Invalid userName or password' })
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, foundUser.password)
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid password' })
+    }
+
+    const token = generateToken(foundUser)
+
+    res.status(200).json({
+      message: 'Login successful',
+      token,
+      user: {
+        userName: foundUser.userName,
+        email: foundUser.email,
+      }
+    })
+  } catch (err) {
+    res.status(500).json({ message: err.message })
   }
-
-  const users = readUsers()
-
-  const userExists = users.find(user => user.email === email || user.userName === userName && user.password === password)
-  if (userExists) {
-    return res.status(409).json({ message: 'User already exists' })
-  }
-
-  const newUser = { userName, password, email }
-  users.push(newUser)
-  writeUsers(users)
-
-  res.status(201).json({ message: 'User registered and saved successfully' })
 }

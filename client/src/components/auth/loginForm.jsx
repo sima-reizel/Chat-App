@@ -21,6 +21,7 @@ export default function LoginForm() {
 
         try {
             const data = await login({ userName, password })
+            localStorage.setItem('token', data.token)
             localStorage.setItem('user', JSON.stringify(data.user))
             navigate('/chatMenu')
         } catch (err) {

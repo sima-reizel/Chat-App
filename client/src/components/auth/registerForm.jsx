@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { register } from '../../api/authApi'
 import '../../styles/auth.css'
 
@@ -27,10 +27,12 @@ export default function RegisterForm() {
         if (Object.keys(newErrors).length > 0) return
 
         try {
-            await register(user)
+            const data = await register(user)
+            localStorage.setItem('token', data.token)
+            localStorage.setItem('user', JSON.stringify(data.user))
             navigate('/chatMenu')
         } catch (err) {
-            alert(err?.response?.data?.message || 'Registration failed')
+            alert(err?.response?.data?.message || err)
         }
     }
 
