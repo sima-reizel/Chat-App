@@ -1,16 +1,36 @@
 import express, { json } from 'express'
+import http from 'http';
+import { Server } from 'socket.io';
 import cors from 'cors'
 import authRoutes from './routes/authRoutes.js'
 import dotenv from 'dotenv'
+import groupRoutes from './routes/groupRoutes.js'
 
 dotenv.config()
 
 const app = express()
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000", // your frontend URL
+    methods: ["GET", "POST"]
+  }
+});
+io.on('connection', (socket) => {
+  console.log('A user connected:', socket.id);
+  socket.on('join-room', (groupName) => {
+    socket.join(groupName);
+    io.to(groupName).emit('user-joined', { userId: socket.id });
+  });
+});
+
+
 const PORT = process.env.PORT || 5000
 
 app.use(cors())
 app.use(json())
 app.use(authRoutes)
+app.use('/api/groups', groupRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
