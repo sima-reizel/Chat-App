@@ -18,9 +18,9 @@ export default function RegisterForm() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const newErrors = {}
-        if (!user.userName) newErrors.userName = 'User Name is required'
+        if (!user.userName) newErrors.userName = 'שם משתמש חובה'
         if (!validatePassword(user.password)) newErrors.password = 'Password must be at least 6 characters and include letters and numbers'
-        if (!validateEmail(user.email)) newErrors.email = 'Invalid email address'
+        if (!validateEmail(user.email)) newErrors.email = 'מייל לא תקין'
         setErrors(newErrors)
 
         if (Object.keys(newErrors).length > 0) return
@@ -37,37 +37,37 @@ export default function RegisterForm() {
    return (
         <AuthLayout activeTab="register">
             <form onSubmit={handleSubmit}>
-                <label>User Name</label>
+                <label>שם משתמש</label>
                 <input
                     type="text"
                     name="userName"
                     value={user.userName}
                     onChange={handleChange}
-                    placeholder="Enter your user name"
+                    placeholder="הכנס שם משתמש"
                 />
                 {errors.userName && <small style={{ color: 'red' }}>{errors.userName}</small>}
 
-                <label>Password</label>
+                <label>סיסמא</label>
                 <input
                     type="password"
                     name="password"
                     value={user.password}
                     onChange={handleChange}
-                    placeholder="Choose a password"
+                    placeholder="בחר סיסמא"
                 />
                 {errors.password && <small style={{ color: 'red' }}>{errors.password}</small>}
 
-                <label>Email</label>
+                <label>מייל</label>
                 <input
                     type="email"
                     name="email"
                     value={user.email}
                     onChange={handleChange}
-                    placeholder="Enter your email"
+                    placeholder="הכנס כתובת מייל"
                 />
                 {errors.email && <small style={{ color: 'red' }}>{errors.email}</small>}
 
-                <button type="submit">Sign Up <span className="arrow">✱</span></button>
+                <button type="submit">הרשם <span className="arrow">✱</span></button>
             </form>
         </AuthLayout>
     )

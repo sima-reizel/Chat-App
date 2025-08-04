@@ -14,7 +14,7 @@ export const register = async (userData) => {
 
 //  מעכשיו צריך לגשת עם הטוקן לשרת
 // זה סה"כ דוגמא
-// export const getWithAuth = async (url) => {
+// export const example = async (url) => {
 //   const token = localStorage.getItem('token')
 //   return axios.get(`${API_URL}${url}`, {
 //     headers: {

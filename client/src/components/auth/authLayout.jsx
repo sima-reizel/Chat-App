@@ -10,19 +10,19 @@ export default function AuthLayout({ activeTab, children }) {
             <div className="auth-box">
                 <img src="/logo2.png" alt="logo" className="logo-icon" />
                 <h1 className="title">Collab Canvas</h1>
-                <p className="subtitle">Real-time collaborative creative space</p>
+                <p className="subtitle">מרחב יצירה שיתופי בזמן אמת</p>
                 <div className="tab-buttons">
                     <button
                         className={activeTab === 'login' ? 'active' : ''}
                         onClick={() => navigate('/login')}
                     >
-                        Login
+                        התחברות
                     </button>
                     <button
                         className={activeTab === 'register' ? 'active' : ''}
                         onClick={() => navigate('/register')}
                     >
-                        Sign Up
+                        הרשמה 
                     </button>
                 </div>
                 {children}

@@ -13,8 +13,8 @@ export default function LoginForm() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const newErrors = {}
-        if (!userName.trim()) newErrors.userName = 'Please enter a user name'
-        if (!password.trim()) newErrors.password = 'Please enter a password'
+        if (!userName.trim()) newErrors.userName = 'הכנס שם משתמש'
+        if (!password.trim()) newErrors.password = 'הכנס סיסמא'
         setErrors(newErrors)
 
         if (Object.keys(newErrors).length > 0) return
@@ -28,28 +28,28 @@ export default function LoginForm() {
             alert(err?.response?.data?.message || 'Login failed')
         }
     }
-return (
+    return (
         <AuthLayout activeTab="login">
             <form onSubmit={handleSubmit}>
-                <label>User Name</label>
+                <label>שם משתמש</label>
                 <input
                     type="text"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
-                    placeholder="Enter your user name"
+                    placeholder="הכנס שם משתמש"
                 />
                 {errors.userName && <small style={{ color: 'red' }}>{errors.userName}</small>}
 
-                <label>Password</label>
+                <label>סיסמא</label>
                 <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
+                    placeholder="הכנס סיסמא"
                 />
                 {errors.password && <small style={{ color: 'red' }}>{errors.password}</small>}
 
-                <button type="submit">Login <span className="arrow">↦</span></button>
+                <button type="submit">התחבר<span className="arrow">↦</span></button>
             </form>
         </AuthLayout>
     )
