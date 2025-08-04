@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'fs'
+import { promises as fs } from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 
@@ -7,15 +7,15 @@ const __dirname = dirname(__filename)
 
 const USERS_FILE = join(__dirname, '../data/users.json')
 
-export function readUsers() {
+export const readUsers = async () => {
   try {
-    const data = readFileSync(USERS_FILE, 'utf-8')
+    const data = await fs.readFile(USERS_FILE, 'utf-8')
     return JSON.parse(data)
   } catch (err) {
     return []
   }
 }
 
-export function writeUsers(users) {
-  writeFileSync(USERS_FILE, JSON.stringify(users, null, 2))
+export const writeUsers = async (users) => {
+  await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2))
 }
