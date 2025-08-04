@@ -17,13 +17,6 @@ const io = new Server(server, {
     methods: ["GET", "POST"]
   }
 })
-io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id)
-  socket.on('join-room', (groupName) => {
-    socket.join(groupName)
-    io.to(groupName).emit('user-joined', { userId: socket.id })
-  })
-})
 
 const PORT = process.env.PORT || 5000
 
@@ -32,6 +25,14 @@ app.use(json())
 app.use(authRoutes)
 app.use(validAuth)
 app.use('/api/groups', groupRoutes)
+
+io.on('connection', (socket) => {
+  console.log('A user connected:', socket.id)
+  socket.on('join-room', (groupName) => {
+    socket.join(groupName)
+    io.to(groupName).emit('user-joined', { userId: socket.id })
+  })
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
