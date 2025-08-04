@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { login } from '../../api/authApi'
-import '../../styles/auth.css'
+import AuthLayout from './authLayout'
 
 
 export default function LoginForm() {
@@ -28,37 +28,29 @@ export default function LoginForm() {
             alert(err?.response?.data?.message || 'Login failed')
         }
     }
+return (
+        <AuthLayout activeTab="login">
+            <form onSubmit={handleSubmit}>
+                <label>User Name</label>
+                <input
+                    type="text"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    placeholder="Enter your user name"
+                />
+                {errors.userName && <small style={{ color: 'red' }}>{errors.userName}</small>}
 
-    return (
-        <div className="auth-page">
-            <div className="overlay" />
-            <div className="auth-box">
-                <h2>Login</h2>
-                <form onSubmit={handleSubmit}>
-                    <label>User Name</label>
-                    <input
-                        type="text"
-                        value={userName}
-                        onChange={(e) => setUserName(e.target.value)}
-                        placeholder="Enter your user name"
-                    />
-                    {errors.userName && <small style={{ color: 'red' }}>{errors.userName}</small>}
+                <label>Password</label>
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                />
+                {errors.password && <small style={{ color: 'red' }}>{errors.password}</small>}
 
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Enter your password"
-                    />
-                    {errors.password && <small style={{ color: 'red' }}>{errors.password}</small>}
-
-                    <button type="submit">Login</button>
-                </form>
-                <div className="switch-link">
-                    Don't have an account? <Link to="/register">Register</Link>
-                </div>
-            </div>
-        </div>
+                <button type="submit">Login <span className="arrow">↦</span></button>
+            </form>
+        </AuthLayout>
     )
 }

@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { register } from '../../api/authApi'
-import '../../styles/auth.css'
-
+import AuthLayout from './authLayout'
 
 export default function RegisterForm() {
     const [user, setUser] = useState({ userName: '', password: '', email: '' })
@@ -35,46 +34,41 @@ export default function RegisterForm() {
             alert(err?.response?.data?.message || err)
         }
     }
+   return (
+        <AuthLayout activeTab="register">
+            <form onSubmit={handleSubmit}>
+                <label>User Name</label>
+                <input
+                    type="text"
+                    name="userName"
+                    value={user.userName}
+                    onChange={handleChange}
+                    placeholder="Enter your user name"
+                />
+                {errors.userName && <small style={{ color: 'red' }}>{errors.userName}</small>}
 
-    return (
-        <div className="auth-page">
-            <div className="overlay" />
-            <div className="auth-box">
-                <h2>Register</h2>
-                <form onSubmit={handleSubmit}>
-                    <label>User Name</label>
-                    <input
-                        type="text"
-                        name="userName"
-                        value={user.userName}
-                        onChange={handleChange}
-                        placeholder="Enter your user name"
-                    />
-                    {errors.userName && <small style={{ color: 'red' }}>{errors.userName}</small>}
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={user.password}
-                        onChange={handleChange}
-                        placeholder="Choose a password"
-                    />
-                    {errors.password && <small style={{ color: 'red' }}>{errors.password}</small>}
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={user.email}
-                        onChange={handleChange}
-                        placeholder="Enter your email"
-                    />
-                    {errors.email && <small style={{ color: 'red' }}>{errors.email}</small>}
-                    <button type="submit">Sign Up</button>
-                </form>
-                <div className="switch-link">
-                    Already registered? <Link to="/login">Login</Link>
-                </div>
-            </div>
-        </div>
+                <label>Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    value={user.password}
+                    onChange={handleChange}
+                    placeholder="Choose a password"
+                />
+                {errors.password && <small style={{ color: 'red' }}>{errors.password}</small>}
+
+                <label>Email</label>
+                <input
+                    type="email"
+                    name="email"
+                    value={user.email}
+                    onChange={handleChange}
+                    placeholder="Enter your email"
+                />
+                {errors.email && <small style={{ color: 'red' }}>{errors.email}</small>}
+
+                <button type="submit">Sign Up <span className="arrow">✱</span></button>
+            </form>
+        </AuthLayout>
     )
 }
